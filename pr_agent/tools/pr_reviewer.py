@@ -190,66 +190,67 @@ class PRReviewer:
         Prepare the PR review by processing the AI prediction and generating a markdown-formatted text that summarizes
         the feedback.
         """
-        data = load_yaml(self.prediction.strip(),
-                         keys_fix_yaml=["estimated_effort_to_review_[1-5]:", "security_concerns:", "possible_issues:",
-                                        "relevant_file:", "relevant_line:", "suggestion:"])
-        github_action_output(data, 'review')
+        return self.prediction.strip()
+        # data = load_yaml(self.prediction.strip(),
+        #                  keys_fix_yaml=["estimated_effort_to_review_[1-5]:", "security_concerns:", "possible_issues:",
+        #                                 "relevant_file:", "relevant_line:", "suggestion:"])
+        # github_action_output(data, 'review')
 
-        if 'code_feedback' in data:
-            code_feedback = data['code_feedback']
+        # if 'code_feedback' in data:
+        #     code_feedback = data['code_feedback']
 
-            # Filter out code suggestions that can be submitted as inline comments
-            if get_settings().pr_reviewer.inline_code_comments:
-                del data['code_feedback']
-            else:
-                for suggestion in code_feedback:
-                    if ('relevant_file' in suggestion) and (not suggestion['relevant_file'].startswith('``')):
-                        suggestion['relevant_file'] = f"``{suggestion['relevant_file']}``"
+        #     # Filter out code suggestions that can be submitted as inline comments
+        #     if get_settings().pr_reviewer.inline_code_comments:
+        #         del data['code_feedback']
+        #     else:
+        #         for suggestion in code_feedback:
+        #             if ('relevant_file' in suggestion) and (not suggestion['relevant_file'].startswith('``')):
+        #                 suggestion['relevant_file'] = f"``{suggestion['relevant_file']}``"
 
-                    if 'relevant_line' not in suggestion:
-                        suggestion['relevant_line'] = ''
+        #             if 'relevant_line' not in suggestion:
+        #                 suggestion['relevant_line'] = ''
 
-                    relevant_line_str = suggestion['relevant_line'].split('\n')[0]
+        #             relevant_line_str = suggestion['relevant_line'].split('\n')[0]
 
-                    # removing '+'
-                    suggestion['relevant_line'] = relevant_line_str.lstrip('+').strip()
+        #             # removing '+'
+        #             suggestion['relevant_line'] = relevant_line_str.lstrip('+').strip()
 
-                    # try to add line numbers link to code suggestions
-                    if hasattr(self.git_provider, 'generate_link_to_relevant_line_number'):
-                        link = self.git_provider.generate_link_to_relevant_line_number(suggestion)
-                        if link:
-                            suggestion['relevant_line'] = f"[{suggestion['relevant_line']}]({link})"
-                    else:
-                        pass
+        #             # try to add line numbers link to code suggestions
+        #             if hasattr(self.git_provider, 'generate_link_to_relevant_line_number'):
+        #                 link = self.git_provider.generate_link_to_relevant_line_number(suggestion)
+        #                 if link:
+        #                     suggestion['relevant_line'] = f"[{suggestion['relevant_line']}]({link})"
+        #             else:
+        #                 pass
 
 
-        incremental_review_markdown_text = None
-        # Add incremental review section
-        if self.incremental.is_incremental:
-            last_commit_url = f"{self.git_provider.get_pr_url()}/commits/" \
-                              f"{self.git_provider.incremental.first_new_commit_sha}"
-            incremental_review_markdown_text = f"Starting from commit {last_commit_url}"
+        # incremental_review_markdown_text = None
+        # # Add incremental review section
+        # if self.incremental.is_incremental:
+        #     last_commit_url = f"{self.git_provider.get_pr_url()}/commits/" \
+        #                       f"{self.git_provider.incremental.first_new_commit_sha}"
+        #     incremental_review_markdown_text = f"Starting from commit {last_commit_url}"
 
-        markdown_text = convert_to_markdown(data, self.git_provider.is_supported("gfm_markdown"),
-                                            incremental_review_markdown_text)
+        # markdown_text = convert_to_markdown(data, self.git_provider.is_supported("gfm_markdown"),
+        #                                     incremental_review_markdown_text)
 
-        # Add help text if gfm_markdown is supported
-        if self.git_provider.is_supported("gfm_markdown") and get_settings().pr_reviewer.enable_help_text:
-            markdown_text += "<hr>\n\n<details> <summary><strong>💡 Tool usage guide:</strong></summary><hr> \n\n"
-            markdown_text += HelpMessage.get_review_usage_guide()
-            markdown_text += "\n</details>\n"
+        # # Add help text if gfm_markdown is supported
+        # if self.git_provider.is_supported("gfm_markdown") and get_settings().pr_reviewer.enable_help_text:
+        #     markdown_text += "<hr>\n\n<details> <summary><strong>💡 Tool usage guide:</strong></summary><hr> \n\n"
+        #     markdown_text += HelpMessage.get_review_usage_guide()
+        #     markdown_text += "\n</details>\n"
 
-        # Output the relevant configurations if enabled
-        if get_settings().get('config', {}).get('output_relevant_configurations', False):
-            markdown_text += show_relevant_configurations(relevant_section='pr_reviewer')
+        # # Output the relevant configurations if enabled
+        # if get_settings().get('config', {}).get('output_relevant_configurations', False):
+        #     markdown_text += show_relevant_configurations(relevant_section='pr_reviewer')
 
-        # Add custom labels from the review prediction (effort, security)
-        self.set_review_labels(data)
+        # # Add custom labels from the review prediction (effort, security)
+        # self.set_review_labels(data)
 
-        if markdown_text == None or len(markdown_text) == 0:
-            markdown_text = ""
+        # if markdown_text == None or len(markdown_text) == 0:
+        #     markdown_text = ""
 
-        return markdown_text
+        # return markdown_text
 
     def _publish_inline_code_comments(self) -> None:
         """
