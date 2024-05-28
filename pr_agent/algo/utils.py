@@ -467,8 +467,8 @@ def try_fix_yaml(response_text: str, keys_fix_yaml: List[str] = []) -> dict:
             data = yaml.safe_load(snippet_text.removeprefix('```yaml').lstrip('`').rstrip('`'))
             get_logger().info(f"Successfully parsed AI prediction after extracting yaml snippet")
             return data
-        except:
-            pass
+        except Exception as e:
+            get_logger().error(f"Failed to parse AI prediction after extracting yaml snippet: {e}")
 
      # third fallback - try to remove leading and trailing curly brackets
     response_text_copy = response_text.strip().rstrip().removeprefix('{').removesuffix('}').rstrip(':\n')
