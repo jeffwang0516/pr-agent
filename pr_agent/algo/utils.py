@@ -458,9 +458,11 @@ def try_fix_yaml(response_text: str, keys_fix_yaml: List[str] = []) -> dict:
     except:
         get_logger().info(f"Failed to parse AI prediction after adding |-\n")
 
+    get_logger().info(f"response_text_lines_copy: {response_text_lines_copy}")
     # second fallback - try to extract only range from first ```yaml to ````
     snippet_pattern = r'```(yaml)?[\s\S]*?```'
     snippet = re.search(snippet_pattern, '\n'.join(response_text_lines_copy))
+    get_logger().info(f"snippet: {snippet}")
     if snippet:
         snippet_text = snippet.group()
         try:
