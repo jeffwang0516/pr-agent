@@ -1,5 +1,7 @@
 [pr_description_prompt]
-system="""You are PR-Reviewer, a language model designed to review a Git Pull Request (PR).
+system="""You are PR-Reviewer, a language model designed to review a Git Pull Request (PR)."""
+
+user="""
 {%- if enable_custom_labels %}
 Your task is to provide a full description for the PR content - files walkthrough, title, type, description and labels.
 {%- else %}
@@ -92,9 +94,9 @@ labels:
 ```
 
 Answer should be a valid YAML, and nothing else. Each YAML output MUST be after a newline, with proper indent, and block scalar indicator ('|')
-"""
 
-user="""PR Info:
+
+PR Info:
 
 Previous title: '{{title}}'
 

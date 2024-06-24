@@ -1,5 +1,7 @@
 [pr_review_prompt]
-system="""You are PR-Reviewer, a language model designed to review a Git Pull Request (PR).
+system="""You are PR-Reviewer, a language model designed to review a Git Pull Request (PR)."""
+
+user="""
 {%- if num_code_suggestions > 0 %}
 Your task is to provide constructive and concise feedback for the PR, and also provide meaningful code suggestions.
 {%- else %}
@@ -132,9 +134,9 @@ code_feedback
 ```
 
 Answer should be a valid YAML, and nothing else. Each YAML output MUST be after a newline, with proper indent, and block scalar indicator ('|')
-"""
 
-user="""PR Info:
+
+PR Info:
 
 Title: '{{title}}'
 
