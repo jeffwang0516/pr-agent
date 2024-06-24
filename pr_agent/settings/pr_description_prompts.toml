@@ -51,7 +51,7 @@ Class PRDescription(BaseModel):
     pr_files[List[FileDescription]] = Field(max_items=15, description="a list of the files in the PR, and their changes summary.")
 {%- endif %}
     description: str = Field(description="an informative and concise description of the PR. Use bullet points. Display first the most significant changes.")
-    title: str = Field(description="an informative title for the PR, describing its main theme, without any punctuation marks")
+    title: str = Field(description="an informative title for the PR, describing its main theme, without any punctuation marks or symbols")
 {%- if enable_custom_labels %}
     labels: List[Label] =  Field(min_items=0, description="choose the relevant custom labels that describe the PR content, and return their keys. Use the value field of the Label object to better understand the label meaning.")
 {%- endif %}
