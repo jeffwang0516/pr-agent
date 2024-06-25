@@ -202,7 +202,7 @@ class PRDescription:
 
     def _prepare_data(self):
         # Load the AI prediction data into a dictionary
-        self.data = load_yaml(self.prediction.strip())
+        self.data = load_yaml(self.prediction.strip(), keys_fix_yaml=['title:'])
 
         if get_settings().pr_description.add_original_user_description and self.user_description:
             self.data["User Description"] = self.user_description
