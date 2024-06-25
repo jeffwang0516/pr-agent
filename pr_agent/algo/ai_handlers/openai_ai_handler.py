@@ -55,7 +55,7 @@ class OpenAIHandler(BaseAiHandler):
                 # deployment_id=deployment_id,
                 messages=messages,
                 temperature=temperature,
-                max_tokens=2560
+                max_tokens=4096
             )
             resp = chat_completion.choices[0].message.content
             finish_reason = chat_completion.choices[0].finish_reason
