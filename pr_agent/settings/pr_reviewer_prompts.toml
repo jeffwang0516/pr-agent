@@ -1,55 +1,10 @@
 [pr_review_prompt]
-system="""You are PR-Reviewer, a language model designed to review a Git Pull Request (PR)."""
+system="""Act as a code reviewer of a Pull Request, providing feedback on possible bugs and clean code issues.
+You are provided with the Pull Request changes in a patch format using `git diff`.
+Review only added, edited or deleted lines.
+As a code reviewer, you write reviews in the following format:
 
-user="""
-{%- if num_code_suggestions > 0 %}
-Your task is to provide constructive and concise feedback for the PR, and also provide meaningful code suggestions.
-{%- else %}
-Your task is to provide constructive and concise feedback for the PR.
-{%- endif %}
-The review should focus on new code added in the PR diff (lines starting with '+')
-
-Example PR Diff:
-======
-## file: 'src/file1.py'
-
-@@ -12,5 +12,5 @@ def func1():
-code line 1 that remained unchanged in the PR
-code line 2 that remained unchanged in the PR
--code line that was removed in the PR
-+code line added in the PR
-code line 3 that remained unchanged in the PR
-
-@@ ... @@ def func2():
-...
-
-
-## file: 'src/file2.py'
-...
-======
-
-{%- if num_code_suggestions > 0 %}
-
-
-Code suggestions guidelines:
-- Provide up to {{ num_code_suggestions }} code suggestions. Try to provide diverse and insightful suggestions.
-- Focus on important suggestions like fixing code problems, issues and bugs. As a second priority, provide suggestions for meaningful code improvements like performance, vulnerability, modularity, and best practices.
-- Avoid making suggestions that have already been implemented in the PR code. For example, if you want to add logs, or change a variable to const, or anything else, make sure it isn't already in the PR code.
-- Don't suggest to add docstring, type hints, or comments.
-- Suggestions should focus on the new code added in the PR diff (lines starting with '+')
-- When quoting variables or names from the code, use backticks (`) instead of single quote (').
-{%- endif %}
-
-{%- if extra_instructions %}
-
-Extra instructions from the user:
-======
-{{ extra_instructions }}
-======
-{% endif %}
-
-
-The output must be a YAML object equivalent to type $PRReview, according to the following Pydantic definitions:
+The review must be a YAML code block equivalent to type $PRReview, according to the following Pydantic definitions:
 =====
 {%- if require_can_be_split_review %}
 class SubPR(BaseModel):
@@ -133,44 +88,10 @@ code_feedback
 {%- endif %}
 ```
 
-Answer should be a valid YAML, and nothing else. Each YAML output MUST be after a newline, with proper indent, and block scalar indicator ('|')
+Response should be a valid YAML.
+"""
 
+user="""PR Diff:
 
-PR Info:
-
-Title: '{{title}}'
-
-Branch: '{{branch}}'
-
-{%- if description %}
-
-Description:
-======
-{{ description|trim }}
-======
-{%- endif %}
-
-{%- if question_str %}
-
-=====
-Here are questions to better understand the PR. Use the answers to provide better feedback.
-
-{{ question_str|trim }}
-
-User answers:
-'
-{{ answer_str|trim }}
-'
-=====
-{%- endif %}
-
-
-The PR Diff:
-======
 {{ diff|trim }}
-======
-
-
-Response (should be a valid YAML, and nothing else):
-```yaml
 """

@@ -113,7 +113,7 @@ def get_pr_diff(git_provider: GitProvider, token_handler: TokenHandler, model: s
         if deleted_list_str:
             final_diff = final_diff + "\n\n" + deleted_list_str
     try:
-        get_logger().debug(f"After pruning, added_list_str: {added_list_str}, modified_list_str: {modified_list_str}, "
+        get_logger().info(f"After pruning, added_list_str: {added_list_str}, modified_list_str: {modified_list_str}, "
                            f"deleted_list_str: {deleted_list_str}")
     except Exception as e:
         pass
