@@ -4,14 +4,13 @@ user="""You are provided with the Pull Request changes in a patch format using `
 Review only added, edited or deleted lines.
 As a code reviewer, you write reviews in the following yaml format:
 
-```yaml
 review:
 {%- if require_estimate_effort_to_review %}
   estimated_effort_to_review_[1-5]: |
     3, because ...
 {%- endif %}
 {%- if require_score %}
-  score(1~10):
+  score: 8 out of 10
 {%- endif %}
   relevant_tests: |
     ...
@@ -20,7 +19,7 @@ review:
   security_concerns: |
     ...
 {%- if num_code_suggestions > 0 %}
-code_feedback
+code_feedback:
 - relevant_file: |
     directory/xxx.py
   language: |
@@ -30,9 +29,9 @@ code_feedback
   relevant_line: |
     xxx
 {%- endif %}
-```
 
-PR Diff:
+
+Git diff:
 
 {{ diff|trim }}
 """
