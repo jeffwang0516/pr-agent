@@ -104,7 +104,8 @@ def convert_to_markdown(output_data: dict, gfm_supported: bool = True, increment
             if 'Estimated effort to review' in key_nice:
                 key_nice = 'Estimated&nbsp;effort&nbsp;to&nbsp;review [1-5]'
             if 'security concerns' in key_nice.lower():
-                value = emphasize_header(value.strip())
+                if type(value) is str:
+                    value = emphasize_header(value.strip())
                 markdown_text += f"<tr><td> {emoji}&nbsp;<strong>{key_nice}</strong></td><td>\n\n{value}\n\n</td></tr>\n"
             elif 'can be split' in key_nice.lower():
                 markdown_text += process_can_be_split(emoji, value)
