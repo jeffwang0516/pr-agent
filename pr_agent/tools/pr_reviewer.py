@@ -148,7 +148,7 @@ class PRReviewer:
                 if get_settings().pr_reviewer.inline_code_comments:
                     self._publish_inline_code_comments()
         except Exception as e:
-            get_logger().error(f"Failed to review PR: {e}", exc_info=e)
+            get_logger().exception(f"Failed to review PR: {e}")
 
     async def _prepare_prediction(self, model: str) -> None:
         self.patches_diff = get_pr_diff(self.git_provider, self.token_handler, model)
