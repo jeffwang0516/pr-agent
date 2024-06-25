@@ -487,7 +487,7 @@ def try_fix_yaml(response_text: str, keys_fix_yaml: List[str] = []) -> dict:
         response_text_lines_tmp = '\n'.join(response_text_lines[i:])
         try:
             data = yaml.safe_load(response_text_lines_tmp)
-            get_logger().info(f"Successfully parsed AI prediction after removing {i} lines")
+            get_logger().info(f"Successfully parsed AI prediction after removing first {i} lines")
             if data is not None:
                 return data
         except:
@@ -498,7 +498,7 @@ def try_fix_yaml(response_text: str, keys_fix_yaml: List[str] = []) -> dict:
         response_text_lines_tmp = '\n'.join(response_text_lines[:-i])
         try:
             data = yaml.safe_load(response_text_lines_tmp)
-            get_logger().info(f"Successfully parsed AI prediction after removing {i} lines")
+            get_logger().info(f"Successfully parsed AI prediction after removing last {i} lines")
             # return data
         except:
             pass
