@@ -300,6 +300,8 @@ class PRDescription:
         if not get_settings().pr_description.enable_pr_type:
             self.data.pop('type')
         for key, value in self.data.items():
+            if 'here is the' in key.lower():
+                continue
             markdown_text += f"## **{key}**\n\n"
             markdown_text += f"{value}\n\n"
 
