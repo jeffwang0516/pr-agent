@@ -169,6 +169,6 @@ The PR Diff:
 ======
 
 
-Output(YAML):
-
+Response (should be a valid YAML, and nothing else):
+```yaml
 """
