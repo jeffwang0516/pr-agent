@@ -319,6 +319,8 @@ class PRDescription:
         pr_body, changes_walkthrough = "", ""
         pr_file_changes = []
         for idx, (key, value) in enumerate(self.data.items()):
+            if 'here is the' in key.lower():
+                continue
             if key == 'pr_files':
                 value = self.file_label_dict
             else:
