@@ -482,17 +482,30 @@ def try_fix_yaml(response_text: str, keys_fix_yaml: List[str] = []) -> dict:
     except:
         pass
 
-    # fourth fallback - try to remove last lines
-    data = {}
+    # fourth fallback - try to first few lines
+    for i in range(1, min(6, len(response_text_lines))):
+        response_text_lines_tmp = '\n'.join(response_text_lines[i:])
+        try:
+            data = yaml.safe_load(response_text_lines_tmp)
+            get_logger().info(f"Successfully parsed AI prediction after removing {i} lines")
+            if data is not None:
+                return data
+        except:
+            pass
+    # fifth fallback - try to remove last lines
+    data = None
     for i in range(1, len(response_text_lines)):
         response_text_lines_tmp = '\n'.join(response_text_lines[:-i])
         try:
             data = yaml.safe_load(response_text_lines_tmp)
             get_logger().info(f"Successfully parsed AI prediction after removing {i} lines")
-            return data
+            # return data
         except:
             pass
-
+    if not data:
+        # fallback to raw output
+        data = {'raw_output': '\n'.join(response_text_lines)}
+    return data
 
 def set_custom_labels(variables, git_provider=None):
     if not get_settings().config.enable_custom_labels:

@@ -196,6 +196,9 @@ class PRReviewer:
                                         "relevant_file:", "relevant_line:", "suggestion:"])
         github_action_output(data, 'review')
 
+        if 'raw_output' in data:
+            return data['raw_output']
+
         if 'code_feedback' in data:
             code_feedback = data['code_feedback']
 
