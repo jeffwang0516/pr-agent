@@ -131,7 +131,7 @@ class PRReviewer:
                 return None
 
             pr_review = self._prepare_pr_review()
-            get_logger().debug(f"PR output", artifact=pr_review)
+            get_logger().info(f"PR review output: {pr_review}")
 
             if get_settings().config.publish_output:
                 # publish the review
@@ -251,7 +251,7 @@ class PRReviewer:
         self.set_review_labels(data)
 
         if markdown_text == None or len(markdown_text) == 0:
-            markdown_text = ""
+            markdown_text = self.prediction.strip() # fallback to raw text
 
         return markdown_text
 
