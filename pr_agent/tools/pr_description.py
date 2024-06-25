@@ -105,7 +105,7 @@ class PRDescription:
             if not self.git_provider.is_supported(
                     "publish_file_comments") or not get_settings().pr_description.inline_file_summary:
                 pr_body += "\n\n" + changes_walkthrough
-            get_logger().info("PR output", artifact={"title": pr_title, "body": pr_body})
+            get_logger().info(f"PR output-> title: {pr_title}, body: {pr_body}")
 
             # Add help text if gfm_markdown is supported
             if self.git_provider.is_supported("gfm_markdown") and get_settings().pr_description.enable_help_text:
