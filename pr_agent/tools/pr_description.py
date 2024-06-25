@@ -402,8 +402,8 @@ class PRDescription:
                     filename_publish = filename.split("/")[-1]
                     file_changes_title_code = f"<code>{file_changes_title}</code>"
                     file_changes_title_code_br = insert_br_after_x_chars(file_changes_title_code, x=(delta - 5)).strip()
-                    if len(file_changes_title_code_br) < (delta - 5):
-                        file_changes_title_code_br += "&nbsp; " * ((delta - 5) - len(file_changes_title_code_br))
+                    # if len(file_changes_title_code_br) < (delta - 5):
+                    #     file_changes_title_code_br += "&nbsp; " * ((delta - 5) - len(file_changes_title_code_br))
                     filename_publish = f"<strong>{filename_publish}</strong><dd>{file_changes_title_code_br}</dd>"
                     diff_plus_minus = ""
                     delta_nbsp = ""
@@ -413,7 +413,7 @@ class PRDescription:
                             num_plus_lines = f.num_plus_lines
                             num_minus_lines = f.num_minus_lines
                             diff_plus_minus += f"+{num_plus_lines}/-{num_minus_lines}"
-                            delta_nbsp = "&nbsp; " * max(0, (8 - len(diff_plus_minus)))
+                            # delta_nbsp = "&nbsp; " * max(0, (8 - len(diff_plus_minus)))
                             break
 
                     # try to add line numbers link to code suggestions
@@ -423,20 +423,14 @@ class PRDescription:
                         link = self.git_provider.get_line_link(filename, relevant_line_start=-1)
 
                     file_change_description_br = insert_br_after_x_chars(file_change_description, x=(delta - 5))
-                    pr_body += f"""
-<tr>
+                    pr_body += f"""<tr>
   <td>
     <details>
       <summary>{filename_publish}</summary>
 <hr>
-
 {filename}
 {file_change_description_br}
-
-
 </details>
-    
-
   </td>
   <td><a href="{link}">{diff_plus_minus}</a>{delta_nbsp}</td>
 </tr>                    
