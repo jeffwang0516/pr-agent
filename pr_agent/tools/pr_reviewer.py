@@ -265,7 +265,10 @@ class PRReviewer:
         data = load_yaml(self.prediction.strip(),
                          keys_fix_yaml=["estimated_effort_to_review_[1-5]:", "security_concerns:", "possible_issues:",
                                         "relevant_file:", "relevant_line:", "suggestion:"])
-        comments: List[str] = []
+
+        # combine suggestions
+        combined = dict()
+
         for suggestion in data.get('code_feedback', []):
             relevant_file = suggestion.get('relevant_file', '').strip()
             relevant_line_in_file = suggestion.get('relevant_line', '').strip()
@@ -274,6 +277,10 @@ class PRReviewer:
                 get_logger().info("Skipping inline comment with missing file/line/content")
                 continue
 
+            combined[(relevant_file, relevant_line_in_file)] = combined.get((relevant_file, relevant_line_in_file), '') + '\n' + content
+
+        comments: List[str] = []
+        for (relevant_file, relevant_line_in_file), content in combined.items():
             if self.git_provider.is_supported("create_inline_comment"):
                 comment = self.git_provider.create_inline_comment(content, relevant_file, relevant_line_in_file)
                 if comment:
