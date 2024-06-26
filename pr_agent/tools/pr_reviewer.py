@@ -277,7 +277,7 @@ class PRReviewer:
                 get_logger().info("Skipping inline comment with missing file/line/content")
                 continue
 
-            combined[(relevant_file, relevant_line_in_file)] = combined.get((relevant_file, relevant_line_in_file), '') + '\n' + content
+            combined[(relevant_file, relevant_line_in_file)] = combined.get((relevant_file, relevant_line_in_file), '') + '\n' + '- ' + content
 
         comments: List[str] = []
         for (relevant_file, relevant_line_in_file), content in combined.items():
