@@ -156,7 +156,7 @@ class PRDescription:
                             self.git_provider.publish_comment(update_comment)
                 self.git_provider.remove_initial_comment()
         except Exception as e:
-            get_logger().error(f"Error generating PR description {self.pr_id}: {e}")
+            get_logger().exception(f"Error generating PR description {self.pr_id}: {e}")
         
         return ""
 
@@ -354,6 +354,8 @@ class PRDescription:
 
     def _prepare_file_labels(self):
         file_label_dict = {}
+        if 'pr_files' not in self.data:
+            return file_label_dict
         for file in self.data['pr_files']:
             try:
                 filename = file['filename'].replace("'", "`").replace('"', '`')
