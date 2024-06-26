@@ -282,7 +282,7 @@ class PRReviewer:
                 self.git_provider.publish_inline_comment(content, relevant_file, relevant_line_in_file)
 
         if comments:
-                self.git_provider.publish_inline_comments(comments)
+            self.git_provider.publish_inline_comments(comments)
 
     def _get_user_answers(self) -> Tuple[str, str]:
         """
@@ -375,7 +375,7 @@ class PRReviewer:
             try:
                 review_labels = []
                 if get_settings().pr_reviewer.enable_review_labels_effort:
-                    estimated_effort = data['review']['estimated_effort_to_review_[1-5]']
+                    estimated_effort = str(data['review']['estimated_effort_to_review_[1-5]']) # cast to str to ensure split works
                     estimated_effort_number = int(estimated_effort.split(',')[0])
                     if 1 <= estimated_effort_number <= 5: # 1, because ...
                         review_labels.append(f'Review effort [1-5]: {estimated_effort_number}')
