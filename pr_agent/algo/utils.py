@@ -470,7 +470,10 @@ def try_fix_yaml(response_text: str, keys_fix_yaml: List[str] = []) -> dict:
     # second fallback - try to extract only range from first ```yaml to ````
     snippet_pattern = r'```(yaml)?[\s\S]*?```'
     snippet = re.search(snippet_pattern, '\n'.join(response_text_lines_copy))
-    get_logger().info(f"snippet: {snippet}")
+    get_logger().info(f"snippet1: {snippet}")
+    if not snippet:
+        snippet = re.search(snippet_pattern, response_text)
+        get_logger().info(f"snippet2: {snippet}")
     if snippet:
         snippet_text = snippet.group()
         try:
