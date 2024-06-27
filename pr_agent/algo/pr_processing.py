@@ -71,7 +71,8 @@ def get_pr_diff(git_provider: GitProvider, token_handler: TokenHandler, model: s
     if pr_languages:
         try:
             get_logger().info(f"PR main language: {pr_languages[0]['language']}")
-            get_logger().info(f"PR files: {pr_languages}")
+            for i in range(len(pr_languages[0]['files'])):
+                get_logger().info(f"PR files: {pr_languages[0]['files'][i]}")
         except Exception as e:
             pass
 
