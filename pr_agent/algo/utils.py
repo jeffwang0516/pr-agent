@@ -469,19 +469,19 @@ def try_fix_yaml(response_text: str, keys_fix_yaml: List[str] = []) -> dict:
     get_logger().info(f"response_text_lines_copy: {response_text_lines_copy}")
     # second fallback - try to extract only range from first ```yaml to ````
     snippet_pattern = r'```(yaml)?[\s\S]*?```'
-    snippet = re.search(snippet_pattern, '\n'.join(response_text_lines_copy))
-    get_logger().info(f"snippet1: {snippet}")
-    if not snippet:
-        snippet = re.search(snippet_pattern, response_text)
-        get_logger().info(f"snippet2: {snippet}")
-    if snippet:
-        snippet_text = snippet.group()
-        try:
-            data = yaml.safe_load(snippet_text.removeprefix('```yaml').lstrip('`').rstrip('`'))
-            get_logger().info(f"Successfully parsed AI prediction after extracting yaml snippet")
-            return data
-        except Exception as e:
-            get_logger().error(f"Failed to parse AI prediction after extracting yaml snippet: {e}")
+
+    for idx, data in enumerate(['\n'.join(response_text_lines_copy), response_text]):
+        snippet = re.search(snippet_pattern, data)
+        get_logger().info(f"snippet{idx}: {snippet}")
+
+        if snippet:
+            snippet_text = snippet.group()
+            try:
+                data = yaml.safe_load(snippet_text.removeprefix('```yaml').lstrip('`').rstrip('`'))
+                get_logger().info(f"Successfully parsed AI prediction after extracting yaml snippet")
+                return data
+            except Exception as e:
+                get_logger().error(f"Failed to parse AI prediction after extracting yaml snippet: {e}")
 
      # third fallback - try to remove leading and trailing curly brackets
     response_text_copy = response_text.strip().rstrip().removeprefix('{').removesuffix('}').rstrip(':\n')
