@@ -379,8 +379,8 @@ def load_large_diff(filename, new_file_content_str: str, original_file_content_s
         if get_settings().config.verbosity_level >= 2 and show_warning:
             get_logger().warning(f"File was modified, but no patch was found. Manually creating patch: {filename}.")
         patch = ''.join(diff)
-    except Exception:
-        pass
+    except Exception as e:
+        get_logger().exception(f"Failed while loading diffs: {e}.")
     return patch
 
 
