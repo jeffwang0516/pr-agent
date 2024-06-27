@@ -231,6 +231,9 @@ class AzureDevopsProvider(GitProvider):
             base_sha = self.pr.last_merge_target_commit
             head_sha = self.pr.last_merge_source_commit
 
+            get_logger().info(f"base_sha: {base_sha.commit_id}")
+            get_logger().info(f"head_sha: {head_sha.commit_id}")
+
             # Get PR iterations
             iterations = self.azure_devops_client.get_pull_request_iterations(
                 repository_id=self.repo_slug,
