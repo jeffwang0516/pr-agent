@@ -126,7 +126,7 @@ def convert_to_markdown(output_data: dict, gfm_supported: bool = True, increment
                 issues = unique_strings(issues) # remove duplicates
                 number_of_issues = len(issues)
                 if number_of_issues > 1:
-                    markdown_text += f"<tr><td rowspan={number_of_issues}> {emoji}&nbsp;<strong>{key_nice}</strong></td>\n<td>"
+                    markdown_text += f"<tr><td> {emoji}&nbsp;<strong>{key_nice}</strong></td>\n<td>"
                     for i, issue in enumerate(issues):
                         if not issue:
                             continue
