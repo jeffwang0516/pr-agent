@@ -126,15 +126,13 @@ def convert_to_markdown(output_data: dict, gfm_supported: bool = True, increment
                 issues = unique_strings(issues) # remove duplicates
                 number_of_issues = len(issues)
                 if number_of_issues > 1:
-                    markdown_text += f"<tr><td rowspan={number_of_issues}> {emoji}&nbsp;<strong>{key_nice}</strong></td>\n"
+                    markdown_text += f"<tr><td rowspan={number_of_issues}> {emoji}&nbsp;<strong>{key_nice}</strong></td>\n<td>"
                     for i, issue in enumerate(issues):
                         if not issue:
                             continue
                         issue = emphasize_header(issue)
-                        if i == 0:
-                            markdown_text += f"<td>\n\n{issue}</td></tr>\n"
-                        else:
-                            markdown_text += f"<tr>\n<td>\n\n{issue}</td></tr>\n"
+                        markdown_text += f"\n\n{issue}\n"
+                    markdown_text += f"</td></tr>\n"
                 else:
                     value = emphasize_header(value.strip('-').strip())
                     markdown_text += f"<tr><td> {emoji}&nbsp;<strong>{key_nice}</strong></td><td>\n\n{value}\n\n</td></tr>\n"
