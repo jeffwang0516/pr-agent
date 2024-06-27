@@ -110,6 +110,15 @@ def convert_to_markdown(output_data: dict, gfm_supported: bool = True, increment
             elif 'can be split' in key_nice.lower():
                 markdown_text += process_can_be_split(emoji, value)
             elif 'possible issues' in key_nice.lower():
+                if isinstance(value, list):
+                    value_str = ""
+                    for v in value:
+                        if isinstance(v, dict):
+                            for k, v in v.items():
+                                value_str += f"- {k}: {v}\n"
+                        else:
+                            value_str += str(v) + "\n"
+                    value = value_str
                 value = value.strip()
                 issues = value.split('\n- ')
                 for i, _ in enumerate(issues):
