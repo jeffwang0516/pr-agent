@@ -430,8 +430,11 @@ class PRDescription:
     <details>
       <summary>{filename_publish}</summary>
 <hr>
+
 {filename}
+
 {file_change_description_br}
+
 </details>
   </td>
   <td><a href="{link}">{diff_plus_minus}</a>{delta_nbsp}</td>
