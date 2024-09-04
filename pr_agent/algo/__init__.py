@@ -37,4 +37,6 @@ MAX_TOKENS = {
     'groq/llama3-8b-8192': 8192,
     'groq/llama3-70b-8192': 8192,
     'vllm-model-meta-llama-3-8b--e0hxnx4j0': 8192,
+    'vllm-model-meta-llama-3-8b--91-2t4ez0': 8192,
+    'vllm-model-meta-llama-3.1-8b-instruct': 81920
 }
